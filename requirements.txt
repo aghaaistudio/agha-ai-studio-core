@@ -1,3 +1,15 @@
-Flask
-python-dotenv
-requests
+# Agha AI Studio — Python dependencies
+# Install with: pip install -r requirements.txt
+
+Flask>=3.0
+python-dotenv>=1.0
+requests>=2.31
+
+# Database & ORM
+Flask-SQLAlchemy>=3.1
+
+# Authentication & sessions
+Flask-Login>=0.6
+
+# Password hashing comes with Werkzeug (Flask dependency)
+# No need to list it explicitly.
