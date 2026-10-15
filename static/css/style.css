@@ -1,0 +1,51 @@
+:root {
+  --wine: #310d20;
+  --wine-light: #58152f;
+  --red: #a91f4d;
+  --pink: #f2a6c0;
+  --cream: #fff7fa;
+  --muted: #cdbbc5;
+  --glass: rgba(255,255,255,.075);
+  --line: rgba(255,255,255,.13);
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; color: var(--cream); font-family: system-ui, -apple-system, "Segoe UI", sans-serif; background: radial-gradient(ellipse at 85% 8%, rgba(169,31,77,.28), transparent 35%), radial-gradient(ellipse at 10% 50%, rgba(242,166,192,.09), transparent 32%), linear-gradient(145deg, #1b0813, var(--wine) 48%, #260918); min-height: 100vh; }
+.app-shell { width: min(1120px, 100% - 36px); margin: auto; }
+.topbar { display: flex; align-items: center; gap: 13px; padding: 23px 0; border-bottom: 1px solid var(--line); }
+.brand-mark { width: 43px; height: 43px; display: grid; place-items: center; border-radius: 14px; font-size: 25px; font-weight: 900; color: white; background: linear-gradient(145deg, #f4b2ca, #a91f4d 55%, #4c102b); box-shadow: 0 7px 24px #0005, inset 0 1px 2px #fff9; }
+.brand-name { font-weight: 850; letter-spacing: 1.6px; font-size: 15px; }
+.brand-name span { color: var(--pink); }
+.status-pill, .live-label { margin-left: auto; border: 1px solid var(--line); border-radius: 30px; padding: 8px 12px; color: #f7cfdd; font-size: 11px; letter-spacing: .7px; background: var(--glass); }
+.status-pill i { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: #f2a6c0; margin-right: 6px; box-shadow: 0 0 10px #f2a6c0; }
+.hero { position: relative; overflow: hidden; isolation: isolate; margin-top: 28px; padding: clamp(32px, 7vw, 78px); border: 1px solid var(--line); border-radius: 30px; background: linear-gradient(125deg, rgba(255,255,255,.09), rgba(255,255,255,.025)); box-shadow: 0 25px 70px #0004, inset 0 1px 1px #fff2; }
+.eyebrow { color: var(--pink); font-size: 11px; font-weight: 800; letter-spacing: 2.3px; }
+.hero h1 { position: relative; z-index: 1; font-size: clamp(38px, 7vw, 72px); line-height: 1.07; letter-spacing: -2.5px; margin: 22px 0; }
+.hero h1 span { background: linear-gradient(90deg, #fff, #f2a6c0 55%, #cf638c); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.intro { position: relative; z-index: 1; max-width: 520px; color: var(--muted); line-height: 1.8; font-size: 15px; }
+.hero-actions { position: relative; z-index: 2; display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+.primary-button, .secondary-button { min-height: 47px; display: inline-flex; align-items: center; justify-content: center; gap: 12px; padding: 0 19px; border-radius: 14px; text-decoration: none; font-weight: 750; font-size: 13px; transition: transform .2s, box-shadow .2s; }
+.primary-button { color: white; background: linear-gradient(135deg, #e77fa4, #a91f4d 58%, #721632); box-shadow: 0 8px 24px #a91f4d55, inset 0 1px 1px #fff8; }
+.secondary-button { color: #ffe7ef; border: 1px solid var(--line); background: #ffffff09; }
+.primary-button:hover, .secondary-button:hover { transform: translateY(-2px); box-shadow: 0 12px 28px #0004; }
+.orb { position: absolute; z-index: -1; border-radius: 50%; filter: blur(1px); pointer-events: none; }
+.orb-one { width: 270px; height: 270px; right: -55px; top: 20px; background: radial-gradient(circle at 30% 25%, #f8d6e3, #c74676 30%, #681533 65%, #2a0919); box-shadow: inset -18px -20px 45px #17050f99, inset 8px 8px 28px #fff6, 0 25px 60px #0007; opacity: .7; }
+.orb-two { width: 110px; height: 110px; right: 175px; bottom: -42px; background: radial-gradient(circle at 30% 25%, #fff0f6, #df7098 45%, #681533); box-shadow: inset -9px -10px 20px #17050f99, inset 5px 5px 13px #fff8; opacity: .45; }
+.section { padding: 45px 0 24px; }
+.section-heading { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+.section-heading .eyebrow { margin-bottom: 8px; }
+h2 { font-size: clamp(24px, 4vw, 34px); letter-spacing: -.8px; margin: 0; }
+.feature-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.feature-card { padding: 24px; border: 1px solid var(--line); border-radius: 22px; background: linear-gradient(145deg, #ffffff0d, #ffffff03); box-shadow: 0 15px 35px #0002, inset 0 1px 1px #fff1; transition: transform .2s, border-color .2s; }
+.feature-card:hover { transform: translateY(-4px); border-color: #f2a6c066; }
+.card-icon { width: 45px; height: 45px; display: grid; place-items: center; border-radius: 14px; color: #ffe8f0; font-size: 23px; background: linear-gradient(145deg, #c94b78, #56132f); box-shadow: inset 0 1px 1px #fff6, 0 7px 18px #0003; }
+.feature-card h3 { margin: 19px 0 8px; font-size: 17px; }
+.feature-card p, .platform-panel p { color: var(--muted); line-height: 1.75; font-size: 13px; }
+.card-link { display: inline-block; margin-top: 10px; color: var(--pink); font-size: 12px; font-weight: 750; }
+.platform-panel { display: flex; align-items: center; justify-content: space-between; gap: 25px; margin: 30px 0; padding: clamp(24px, 5vw, 42px); border-radius: 24px; border: 1px solid var(--line); background: linear-gradient(120deg, #8c1d43aa, #ffffff06 75%); box-shadow: inset 0 1px 1px #fff2, 0 18px 45px #0002; }
+.platform-panel > div:first-child { max-width: 620px; }
+.shield { flex-shrink: 0; width: 90px; height: 100px; display: grid; place-items: center; position: relative; font-size: 35px; font-weight: 900; color: #fff0f6; border: 1px solid #f2a6c077; border-radius: 24px 24px 32px 32px; background: linear-gradient(145deg, #ef9fbb66, #8e194488 55%, #300a20); box-shadow: inset 0 2px 3px #fff6, 0 15px 30px #0005; transform: perspective(300px) rotateY(-8deg); }
+.shield span { color: var(--pink); font-size: 18px; }
+footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; padding: 22px 0 30px; border-top: 1px solid var(--line); color: #f5dce6; font-size: 12px; }
+footer span { color: #bda6b2; }
+@media (max-width: 700px) { .app-shell { width: calc(100% - 24px); } .topbar { gap: 9px; padding: 17px 0; } .brand-name { font-size: 12px; letter-spacing: 1px; } .brand-mark { width: 38px; height: 38px; } .status-pill { padding: 7px 8px; font-size: 9px; } .hero { margin-top: 16px; padding: 30px 23px; border-radius: 23px; } .hero h1 { letter-spacing: -1.5px; } .orb-one { width: 155px; height: 155px; right: -60px; top: 22px; opacity: .42; } .orb-two { display: none; } .feature-grid { grid-template-columns: 1fr; gap: 12px; } .feature-card { padding: 20px; } .platform-panel { align-items: flex-start; } .shield { width: 62px; height: 72px; font-size: 25px; border-radius: 17px 17px 23px 23px; } .live-label { font-size: 9px; padding: 7px 9px; } }

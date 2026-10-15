@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agha AI Studio - SaaS Platform</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="app-container">
+        <header class="navbar">
+            <div class="brand">Agha <span>AI Studio</span></div>
+            <div class="nav-links">
+                <span class="badge">SaaS Active</span>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <section class="dashboard-card">
+                <h2>AI Workspace & Provider Settings</h2>
+                <p>Connect your AI models, manage credits, and test real-time prompt generation.</p>
+                
+                <div class="form-group">
+                    <label for="promptInput">Enter your prompt:</label>
+                    <textarea id="promptInput" rows="4" placeholder="Type something for the AI..."></textarea>
+                </div>
+
+                <button id="generateBtn" class="primary-btn">Generate Response</button>
+
+                <div class="result-box" id="resultBox" style="margin-top: 20px; display: none;">
+                    <h3>Response:</h3>
+                    <p id="outputText"></p>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        document.getElementById('generateBtn').addEventListener('click', async () => {
+            const prompt = document.getElementById('promptInput').value;
+            const outputText = document.getElementById('outputText');
+            const resultBox = document.getElementById('resultBox');
+            
+            if (!prompt.trim()) {
+                alert('Please enter a prompt first.');
+                return;
+            }
+
+            outputText.textContent = 'Generating...';
+            resultBox.style.display = 'block';
+
+            try {
+                const response = await fetch('/api/generate', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ prompt })
+                });
+                const data = await response.json();
+                if (data.ok) {
+                    outputText.textContent = data.text;
+                } else {
+                    outputText.textContent = 'Error: ' + (data.error || 'Unknown error');
+                }
+            } catch (err) {
+                outputText.textContent = 'Failed to connect to server.';
+            }
+        });
+    </script>
+</body>
+</html>
