@@ -13,6 +13,7 @@ from flask import Flask
 from config import get_config
 from extensions import db, login_manager
 from routes.api import api_bp
+from routes.auth import auth_bp
 from routes.main import main_bp
 
 
@@ -44,6 +45,7 @@ def create_app() -> Flask:
     # Register route groups (blueprints).
     app.register_blueprint(main_bp)
     app.register_blueprint(api_bp, url_prefix="/api")
+    app.register_blueprint(auth_bp)
 
     return app
 

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log in — Agha AI Studio</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="app-container">
+        <header class="navbar">
+            <div class="brand">Agha <span>AI Studio</span></div>
+            <div class="nav-links">
+                <a href="{{ url_for('auth.register') }}" class="badge">Register</a>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <section class="dashboard-card">
+                <h2>Welcome back</h2>
+                <p>Log in to your Agha AI Studio account.</p>
+
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="flash flash-{{ category }}">{{ message }}</div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+
+                <form method="POST" action="{{ url_for('auth.login') }}">
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" required maxlength="255">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password" required>
+                    </div>
+                    <button type="submit" class="primary-btn">Log in</button>
+                </form>
+
+                <p style="margin-top: 20px;">
+                    Don't have an account?
+                    <a href="{{ url_for('auth.register') }}">Register</a>
+                </p>
+            </section>
+        </main>
+    </div>
+</body>
+</html>

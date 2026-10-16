@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register — Agha AI Studio</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="app-container">
+        <header class="navbar">
+            <div class="brand">Agha <span>AI Studio</span></div>
+            <div class="nav-links">
+                <a href="{{ url_for('auth.login') }}" class="badge">Log in</a>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <section class="dashboard-card">
+                <h2>Create your account</h2>
+                <p>Join Agha AI Studio and start using real AI APIs.</p>
+
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="flash flash-{{ category }}">{{ message }}</div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+
+                <form method="POST" action="{{ url_for('auth.register') }}">
+                    <div class="form-group">
+                        <label for="name">Full name</label>
+                        <input type="text" id="name" name="name" required maxlength="120">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" required maxlength="255">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password (min 8 characters)</label>
+                        <input type="password" id="password" name="password" required minlength="8">
+                    </div>
+                    <div class="form-group">
+                        <label for="password_confirm">Confirm password</label>
+                        <input type="password" id="password_confirm" name="password_confirm" required minlength="8">
+                    </div>
+                    <button type="submit" class="primary-btn">Create account</button>
+                </form>
+
+                <p style="margin-top: 20px;">
+                    Already have an account?
+                    <a href="{{ url_for('auth.login') }}">Log in</a>
+                </p>
+            </section>
+        </main>
+    </div>
+</body>
+</html>
