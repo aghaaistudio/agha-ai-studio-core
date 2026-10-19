@@ -1,6 +1,7 @@
 from flask import Blueprint, jsonify, request
 from extensions import db
 from models.api import ApiKey
+from models.usage import UsageRecord
 from services.gemini import generate_text
 from datetime import datetime, timezone
 
@@ -29,8 +30,24 @@ def api_generate():
 
     result = generate_text(prompt)
     
-    key_obj.last_used_at = datetime.now(timezone.utc)
-    db.session.commit()
+    # --- DEBUGGING BLOCK START ---
+    try:
+        key_obj.last_used_at = datetime.now(timezone.utc)
+        record = UsageRecord(
+            user_id=key_obj.user_id,
+            api_key_id=key_obj.id,
+            endpoint="/api/v1/generate",
+            provider="gemini",
+            model_name=result.get("model", ""),
+            success=result.get("ok", False)
+        )
+        db.session.add(record)
+        db.session.commit()
+        print("✅ DB COMMIT SUCCESSFUL")
+    except Exception as e:
+        db.session.rollback()
+        print(f"❌ DB COMMIT ERROR: {str(e)}")
+    # --- DEBUGGING BLOCK END ---
     
     if result.get("ok"):
         return jsonify(result), 200

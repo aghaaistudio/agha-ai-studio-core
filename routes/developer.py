@@ -4,6 +4,7 @@ from flask import (
 from flask_login import current_user, login_required
 from extensions import db
 from models.api import Application, ApiKey
+from models.usage import UsageRecord
 
 developer_bp = Blueprint("developer", __name__, url_prefix="/developer")
 
@@ -11,9 +12,9 @@ developer_bp = Blueprint("developer", __name__, url_prefix="/developer")
 @login_required
 def dashboard():
     apps = Application.query.filter_by(user_id=current_user.id).order_by(Application.created_at.desc()).all()
-    # Pop the new key so it shows exactly once
     new_key = session.pop("new_api_key", None)
-    return render_template("developer/dashboard.html", apps=apps, new_key=new_key)
+    usage_count = UsageRecord.query.filter_by(user_id=current_user.id).count()
+    return render_template("developer/dashboard.html", apps=apps, new_key=new_key, usage_count=usage_count)
 
 @developer_bp.post("/apps")
 @login_required
