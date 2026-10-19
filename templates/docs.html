@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Documentation — Agha AI Studio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800;900&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-base: #0d0206;
+            --bg-panel: rgba(30, 10, 18, 0.6);
+            --border-color: rgba(255, 51, 102, 0.2);
+            --accent-pink: #ff3366;
+            --accent-gold: #ffb703;
+            --text-main: #ffffff;
+            --text-muted: #b09ea1;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Outfit', sans-serif; }
+        body { background-color: var(--bg-base); color: var(--text-main); min-height: 100vh; position: relative; overflow-x: hidden; }
+        
+        .orb { position: fixed; border-radius: 50%; filter: blur(100px); z-index: 0; opacity: 0.5; animation: float 10s infinite alternate; }
+        .orb-1 { top: -10%; left: -10%; width: 500px; height: 500px; background: #ff3366; }
+        .orb-2 { bottom: -10%; right: -10%; width: 400px; height: 400px; background: #800020; }
+        @keyframes float { 0% { transform: translateY(0px) scale(1); } 100% { transform: translateY(30px) scale(1.1); } }
+
+        .top-nav { background: rgba(13, 2, 6, 0.7); backdrop-filter: blur(20px); padding: 15px 40px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 100; }
+        
+        .brand-logo { display: flex; flex-direction: column; align-items: flex-start; line-height: 1; }
+        .logo-agha { font-size: 34px; font-weight: 900; letter-spacing: 2px; background: linear-gradient(180deg, #ff9d00 0%, #d35400 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-shadow: 2px 2px 5px rgba(0,0,0,0.8); font-family: 'Impact', 'Arial Black', sans-serif; }
+        .logo-sub { font-size: 12px; font-weight: 700; letter-spacing: 6px; background: linear-gradient(180deg, #ffffff 0%, #b3b3b3 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-shadow: 1px 1px 3px rgba(0,0,0,0.9); margin-top: 2px; margin-left: 2px; }
+        
+        .container { max-width: 900px; margin: 50px auto; padding: 0 20px; position: relative; z-index: 10; }
+        
+        .glass-panel { background: var(--bg-panel); backdrop-filter: blur(24px); border: 1px solid rgba(255, 255, 255, 0.08); border-top: 1px solid rgba(255, 255, 255, 0.2); border-radius: 24px; padding: 40px; margin-bottom: 30px; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5); }
+        
+        h1 { font-size: 28px; font-weight: 600; margin-bottom: 15px; color: var(--accent-gold); }
+        h2 { font-size: 20px; font-weight: 600; margin-top: 30px; margin-bottom: 15px; color: #fff; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
+        p { color: var(--text-muted); line-height: 1.6; margin-bottom: 15px; font-size: 16px; }
+        
+        .endpoint-box { background: rgba(0,0,0,0.5); padding: 15px 20px; border-radius: 12px; font-family: 'Fira Code', monospace; margin-bottom: 20px; border-left: 4px solid var(--accent-pink); }
+        .method { color: #4CAF50; font-weight: bold; margin-right: 10px; }
+        .url { color: #fff; }
+
+        .code-container { position: relative; background: #050102; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; margin-bottom: 25px; overflow: hidden; }
+        .code-header { background: rgba(255,255,255,0.05); padding: 10px 15px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .code-title { font-size: 13px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+        .copy-btn { background: var(--accent-pink); color: white; border: none; padding: 5px 12px; border-radius: 6px; font-size: 12px; cursor: pointer; font-weight: 600; transition: 0.2s; }
+        .copy-btn:hover { background: #ff5c85; }
+        pre { padding: 20px; overflow-x: auto; font-family: 'Fira Code', monospace; font-size: 14px; color: #e6db74; line-height: 1.5; margin: 0; }
+        .string { color: #a6e22e; }
+        .key { color: #66d9ef; }
+
+        .btn { background: transparent; border: 1px solid var(--accent-pink); color: var(--accent-pink); padding: 10px 20px; border-radius: 10px; cursor: pointer; font-weight: 600; font-size: 14px; text-decoration: none; display: inline-block; transition: 0.3s; }
+        .btn:hover { background: rgba(255,51,102,0.1); }
+    </style>
+</head>
+<body>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+
+    <nav class="top-nav">
+        <div class="brand-logo">
+            <div class="logo-agha">AGHA</div>
+            <div class="logo-sub">AI STUDIO</div>
+        </div>
+        <div>
+            <a href="{{ url_for('main.home') }}" class="btn">← Back to Workspace</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="glass-panel">
+            <h1>API Documentation</h1>
+            <p>Welcome to Agha AI Studio. Integrate our powerful Generative AI directly into your websites and applications using our secure REST API.</p>
+            
+            <h2>Authentication</h2>
+            <p>All API requests must include your API Key in the Authorization header as a Bearer token. You can generate your API Key from the Developer Dashboard.</p>
+            <div class="code-container">
+                <div class="code-header"><span class="code-title">Authorization Header</span></div>
+                <pre>Authorization: Bearer YOUR_API_KEY</pre>
+            </div>
+
+            <h2>Generate Text</h2>
+            <p>Send a POST request to the following endpoint with a JSON body containing your prompt.</p>
+            <div class="endpoint-box">
+                <span class="method">POST</span> <span class="url">http://127.0.0.1:5000/api/v1/generate</span>
+            </div>
+
+            <h3>cURL Example</h3>
+            <div class="code-container">
+                <div class="code-header">
+                    <span class="code-title">Terminal</span>
+                    <button class="copy-btn" onclick="copyCode('curlCode')">Copy</button>
+                </div>
+                <pre id="curlCode">curl -X POST http://127.0.0.1:5000/api/v1/generate \
+-H "Content-Type: application/json" \
+-H "Authorization: Bearer YOUR_API_KEY" \
+-d '{"prompt": "Write a short slogan for a coffee shop."}'</pre>
+            </div>
+
+            <h3>Python Example</h3>
+            <div class="code-container">
+                <div class="code-header">
+                    <span class="code-title">Python (requests)</span>
+                    <button class="copy-btn" onclick="copyCode('pythonCode')">Copy</button>
+                </div>
+                <pre id="pythonCode">import requests
+
+url = "http://127.0.0.1:5000/api/v1/generate"
+headers = {
+    "Authorization": "Bearer YOUR_API_KEY",
+    "Content-Type": "application/json"
+}
+data = {"prompt": "Write a short slogan for a coffee shop."}
+
+response = requests.post(url, json=data, headers=headers)
+print(response.json())</pre>
+            </div>
+            
+            <h3>JavaScript Example</h3>
+            <div class="code-container">
+                <div class="code-header">
+                    <span class="code-title">JavaScript (fetch)</span>
+                    <button class="copy-btn" onclick="copyCode('jsCode')">Copy</button>
+                </div>
+                <pre id="jsCode">const response = await fetch('http://127.0.0.1:5000/api/v1/generate', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer YOUR_API_KEY'
+  },
+  body: JSON.stringify({
+    prompt: 'Write a short slogan for a coffee shop.'
+  })
+});
+
+const data = await response.json();
+console.log(data);</pre>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        function copyCode(elementId) {
+            const code = document.getElementById(elementId).innerText;
+            navigator.clipboard.writeText(code).then(() => {
+                const btn = event.target;
+                const originalText = btn.innerText;
+                btn.innerText = 'Copied!';
+                btn.style.background = '#4CAF50';
+                setTimeout(() => {
+                    btn.innerText = originalText;
+                    btn.style.background = 'var(--accent-pink)';
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>

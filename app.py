@@ -6,6 +6,7 @@ from routes.auth import auth_bp
 from routes.main import main_bp
 from routes.developer import developer_bp
 from routes.gateway import gateway_bp
+from routes.docs import docs_bp
 
 def create_app() -> Flask:
     app = Flask(__name__)
@@ -32,6 +33,8 @@ def create_app() -> Flask:
     app.register_blueprint(auth_bp)
     app.register_blueprint(developer_bp)
     app.register_blueprint(gateway_bp, url_prefix="/api")
+    app.register_blueprint(docs_bp)
+
     return app
 
 app = create_app()
