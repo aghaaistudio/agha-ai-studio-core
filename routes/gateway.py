@@ -1,6 +1,7 @@
 from flask import Blueprint, jsonify, request
 from extensions import db
 from models.api import ApiKey
+from models.user import User
 from models.usage import UsageRecord
 from services.gemini import generate_text
 from datetime import datetime, timezone
@@ -22,6 +23,11 @@ def api_generate():
     if not key_obj.has_scope("generate"):
         return jsonify({"ok": False, "error": "API key lacks 'generate' scope"}), 403
 
+    # CHECK USER CREDITS
+    user = User.query.get(key_obj.user_id)
+    if not user or user.credits <= 0:
+        return jsonify({"ok": False, "error": "Insufficient credits. Please top up your account."}), 403
+
     data = request.get_json(silent=True) or {}
     prompt = (data.get("prompt") or "").strip()
     
@@ -30,8 +36,9 @@ def api_generate():
 
     result = generate_text(prompt)
     
-    # --- DEBUGGING BLOCK START ---
-    try:
+    # Deduct 1 credit upon success
+    if result.get("ok"):
+        user.credits -= 1
         key_obj.last_used_at = datetime.now(timezone.utc)
         record = UsageRecord(
             user_id=key_obj.user_id,
@@ -39,16 +46,10 @@ def api_generate():
             endpoint="/api/v1/generate",
             provider="gemini",
             model_name=result.get("model", ""),
-            success=result.get("ok", False)
+            success=True
         )
         db.session.add(record)
         db.session.commit()
-        print("✅ DB COMMIT SUCCESSFUL")
-    except Exception as e:
-        db.session.rollback()
-        print(f"❌ DB COMMIT ERROR: {str(e)}")
-    # --- DEBUGGING BLOCK END ---
-    
-    if result.get("ok"):
         return jsonify(result), 200
+    
     return jsonify(result), 500
