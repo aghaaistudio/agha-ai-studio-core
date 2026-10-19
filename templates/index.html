@@ -67,7 +67,10 @@
         <div class="user-info">
             {% if current_user.is_authenticated %}
                 <span>{{ current_user.name }}</span>
-                <a href="{{ url_for('developer.dashboard') }}" class="btn btn-sm btn-outline" style="margin-right:10px;">Developer Dashboard</a>
+                <a href="{{ url_for('developer.dashboard') }}" class="btn btn-sm btn-outline" style="margin-right:5px;">Developer Dashboard</a>
+                <a href="{{ url_for('billing.index') }}" class="btn btn-sm btn-outline" style="margin-right:5px; border-color: var(--accent-gold); color: var(--accent-gold);">Buy Credits</a>
+                <a href="{{ url_for('docs.api_docs') }}" class="btn btn-sm btn-outline" style="margin-right:5px;">API Docs</a>
+                <a href="{{ url_for('user.settings') }}" class="btn btn-sm btn-outline" style="margin-right:5px;">Settings</a>
                 <form method="POST" action="{{ url_for('auth.logout') }}" style="margin:0;">
                     <button type="submit" class="btn btn-sm btn-outline">Logout</button>
                 </form>
