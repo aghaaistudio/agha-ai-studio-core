@@ -47,6 +47,15 @@ class Config:
     DEEPSEEK_MODEL = os.getenv("DEEPSEEK_MODEL", "")
 
     # Networking
+    
+    # Email Configuration
+    MAIL_SERVER = os.getenv("MAIL_SERVER", "smtp.gmail.com")
+    MAIL_PORT = int(os.getenv("MAIL_PORT", "587"))
+    MAIL_USE_TLS = os.getenv("MAIL_USE_TLS", "True").lower() == "true"
+    MAIL_USERNAME = os.getenv("MAIL_USERNAME", "aghaaistudiosupport@gmail.com")
+    MAIL_PASSWORD = os.getenv("MAIL_PASSWORD", "YOUR_APP_PASSWORD_HERE")
+    MAIL_DEFAULT_SENDER = os.getenv("MAIL_USERNAME", "aghaaistudiosupport@gmail.com")
+
     REQUEST_TIMEOUT = int(os.getenv("REQUEST_TIMEOUT", "30"))
 
     # Environment

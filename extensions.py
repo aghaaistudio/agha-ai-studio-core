@@ -8,10 +8,13 @@ app.py initialises them against the Flask app via init_app().
 """
 from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
+from flask_mail import Mail
 
 
 # Database ORM
 db = SQLAlchemy()
+
+mail = Mail()
 
 # Session/login manager
 login_manager = LoginManager()

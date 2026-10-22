@@ -1,6 +1,6 @@
 from flask import Flask
 from config import get_config
-from extensions import db, login_manager
+from extensions import db, login_manager, mail
 from routes.api import api_bp
 from routes.auth import auth_bp
 from routes.main import main_bp
@@ -21,6 +21,7 @@ def create_app() -> Flask:
 
     db.init_app(app)
     login_manager.init_app(app)
+    mail.init_app(app)
 
     from models.user import User
     @login_manager.user_loader
