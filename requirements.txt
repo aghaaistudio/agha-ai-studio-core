@@ -14,3 +14,4 @@ Flask-Login>=0.6
 # Password hashing comes with Werkzeug (Flask dependency)
 # No need to list it explicitly.
 gunicorn
+Flask-Mail
