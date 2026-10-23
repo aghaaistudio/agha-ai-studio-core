@@ -40,6 +40,9 @@ def create_app() -> Flask:
     app.register_blueprint(billing_bp)
     app.register_blueprint(user_bp)
 
+    with app.app_context():
+        db.create_all()
+
     return app
 
 app = create_app()
