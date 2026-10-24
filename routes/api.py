@@ -37,7 +37,8 @@ def generate():
     if not prompt:
         return jsonify({"ok": False, "error": "Prompt is required."}), 400
 
-    result = generate_text(prompt)
+    model = data.get("model", "gemini-2.0-flash")
+    result = generate_text(prompt, model)
 
     if result.get("ok"):
         return jsonify(result), 200

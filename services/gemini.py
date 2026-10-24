@@ -10,7 +10,7 @@ import requests
 from config import get_config
 
 
-def generate_text(prompt: str) -> dict:
+def generate_text(prompt: str, model: str = "gemini-2.0-flash") -> dict:
     """
     Send a prompt to Google Gemini and return a structured result.
 
@@ -26,7 +26,7 @@ def generate_text(prompt: str) -> dict:
     if not config.GEMINI_API_KEY:
         return {"ok": False, "error": "Gemini API key is not configured."}
 
-    model = config.GEMINI_MODEL
+    
     url = (
         "https://generativelanguage.googleapis.com/v1beta/"
         f"models/{model}:generateContent"
