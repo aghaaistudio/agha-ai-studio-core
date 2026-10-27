@@ -88,7 +88,7 @@
             {% if current_user.is_authenticated %}
                 <div class="stats-row">
                     <div class="stat-box">
-                        <div class="stat-val">{{ current_user.credits }}</div>
+                        <div class="stat-val" id="creditDisplay">{{ current_user.credits }}</div>
                         <div class="stat-lbl">Available Credits</div>
                     </div>
                     <div class="stat-box">
@@ -148,8 +148,13 @@
                 });
                 const data = await response.json();
                 
+                
                 if (data.ok) {
                     outputText.innerText = data.text;
+                    // Update credits instantly
+                    if (data.new_credits !== undefined) {
+                        document.getElementById('creditDisplay').innerText = data.new_credits;
+                    }
                 } else {
                     outputText.innerText = 'Error: ' + (data.error || 'Unknown error');
                 }
