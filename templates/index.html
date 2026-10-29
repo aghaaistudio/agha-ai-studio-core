@@ -67,6 +67,9 @@
         <div class="user-info">
             {% if current_user.is_authenticated %}
                 <span>{{ current_user.name }}</span>
+                {% if current_user.role == 'admin' %}
+                <a href="{{ url_for('admin.dashboard') }}" class="btn btn-sm btn-outline" style="margin-right:5px; border-color: #ff3366; color: #ff3366; background: rgba(255,51,102,0.1);">Admin Panel</a>
+                {% endif %}
                 <a href="{{ url_for('developer.dashboard') }}" class="btn btn-sm btn-outline" style="margin-right:5px;">Developer Dashboard</a>
                 <a href="{{ url_for('billing.index') }}" class="btn btn-sm btn-outline" style="margin-right:5px; border-color: var(--accent-gold); color: var(--accent-gold);">Buy Credits</a>
                 <a href="{{ url_for('docs.api_docs') }}" class="btn btn-sm btn-outline" style="margin-right:5px;">API Docs</a>
