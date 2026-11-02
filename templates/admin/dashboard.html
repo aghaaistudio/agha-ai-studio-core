@@ -108,6 +108,37 @@
                 </tbody>
             </table>
         </div>
+    
+        <div class="glass-panel" style="margin-top: 30px;">
+            <h2>Recent AI Usage (Last 50 Requests)</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>User ID</th>
+                        <th>Model</th>
+                        <th>Status</th>
+                        <th>Date & Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for u in usages %}
+                    <tr>
+                        <td>{{ u.user_id }}</td>
+                        <td>{{ u.model_name }}</td>
+                        <td>
+                            {% if u.success %}
+                                <span class="badge badge-active">Success</span>
+                            {% else %}
+                                <span class="badge badge-blocked">Failed</span>
+                            {% endif %}
+                        </td>
+                        <td style="color: var(--text-muted);">{{ u.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
     </div>
 </body>
 </html>

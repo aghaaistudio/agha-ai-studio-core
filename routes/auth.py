@@ -44,6 +44,14 @@ def register():
         db.session.add(user)
         db.session.commit()
 
+        
+        try:
+            msg = Message("Welcome to Agha AI Studio!", recipients=[email])
+            msg.body = f"Hello {name},\n\nWelcome to Agha AI Studio! Your account has been created successfully.\n\nYou can now log in and start using our AI APIs.\n\nBest regards,\nAgha AI Team"
+            mail.send(msg)
+        except Exception as e:
+            print("Welcome email failed to send:", e)
+
         flash("Account created. Please log in.", "success")
         return redirect(url_for("auth.login"))
 

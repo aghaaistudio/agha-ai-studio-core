@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import current_user, login_required
 from extensions import db
 from models.user import User
+from models.usage import UsageRecord
 from functools import wraps
 
 admin_bp = Blueprint("admin", __name__, url_prefix="/admin")
@@ -20,7 +21,8 @@ def admin_required(f):
 @admin_required
 def dashboard():
     users = User.query.order_by(User.created_at.desc()).all()
-    return render_template("admin/dashboard.html", users=users)
+    usages = UsageRecord.query.order_by(UsageRecord.created_at.desc()).limit(50).all()
+    return render_template("admin/dashboard.html", users=users, usages=usages)
 
 @admin_bp.route("/toggle/<int:user_id>", methods=["POST"])
 @login_required
