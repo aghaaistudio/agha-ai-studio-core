@@ -2,6 +2,7 @@ from flask import Blueprint, jsonify, request
 from flask_login import current_user
 from extensions import db
 from services.gemini import generate_text
+from models.usage import UsageRecord
 
 api_bp = Blueprint("api", __name__)
 
@@ -24,8 +25,18 @@ def generate():
 
     if result.get("ok"):
         current_user.credits -= 1
+        
+        # Save Usage Record for Web UI (api_key_id=None)
+        record = UsageRecord(
+            user_id=current_user.id,
+            api_key_id=None,
+            endpoint="/api/generate",
+            provider="gemini",
+            model_name=result.get("model", ""),
+            success=True
+        )
+        db.session.add(record)
         db.session.commit()
-        # نئی کریڈٹ ویلیو فرنٹ اینڈ کو بھیجیں تاکہ وہ فوراً اپ ڈیٹ ہو جائے
         result["new_credits"] = current_user.credits
 
     return jsonify(result), 200 if result.get("ok") else 502

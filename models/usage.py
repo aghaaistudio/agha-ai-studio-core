@@ -1,9 +1,3 @@
-"""
-UsageRecord model for tracking API consumption.
-
-Every successful (and failed) request through the API Gateway
-will create a record here. This is the foundation for billing.
-"""
 from datetime import datetime, timezone
 from extensions import db
 
@@ -15,9 +9,10 @@ class UsageRecord(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False, index=True)
-    api_key_id = db.Column(db.Integer, db.ForeignKey("api_keys.id"), nullable=False, index=True)
+    # api_key_id ab nullable hai (Web UI ke liye zaroori)
+    api_key_id = db.Column(db.Integer, db.ForeignKey("api_keys.id"), nullable=True, index=True)
     
-    endpoint = db.Column(db.String(100), nullable=False) # e.g. "/api/v1/generate"
+    endpoint = db.Column(db.String(100), nullable=False)
     provider = db.Column(db.String(50), nullable=False, default="gemini")
     model_name = db.Column(db.String(50), nullable=False, default="")
     
