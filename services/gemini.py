@@ -4,7 +4,7 @@ Google Gemini provider integration.
 import requests
 from config import get_config
 
-def generate_text(prompt: str, model: str = "gemini-3.5-flash") -> dict:
+def generate_text(prompt: str, model: str = "gemini-3.5-flash-lite") -> dict:
     config = get_config()
 
     if not prompt or not prompt.strip():

@@ -15,7 +15,7 @@ def generate():
 
     data = request.get_json(silent=True) or {}
     prompt = (data.get("prompt") or "").strip()
-    model = data.get("model", "gemini-3.5-flash")
+    model = data.get("model", "gemini-3.5-flash-lite")
 
     if not prompt:
         return jsonify({"ok": False, "error": "Prompt is required."}), 400
