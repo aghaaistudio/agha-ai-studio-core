@@ -46,11 +46,18 @@ def register():
 
         
         try:
+            # 1. Welcome Email to New User (From Support)
             msg = Message("Welcome to Agha AI Studio!", recipients=[email])
-            msg.body = f"Hello {name},\n\nWelcome to Agha AI Studio! Your account has been created successfully.\n\nYou can now log in and start using our AI APIs.\n\nBest regards,\nAgha AI Team"
+            msg.body = f"Hello {name},\n\nWelcome to Agha AI Studio! Your account has been created successfully.\n\nYou can now log in and start using our AI APIs.\n\nBest regards,\nAgha AI Support Team"
             mail.send(msg)
+            
+            # 2. Notification Email to ADMIN (From Support)
+            admin_msg = Message("New User Registered - Agha AI Studio", recipients=["aghaaistudio@gmail.com"])
+            admin_msg.body = f"Hello Admin,\n\nA new user has just registered on your platform.\n\nName: {name}\nEmail: {email}\n\nPlease check your Admin Panel for details."
+            mail.send(admin_msg)
+            
         except Exception as e:
-            print("Welcome email failed to send:", e)
+            print("Email sending failed:", e)
 
         flash("Account created. Please log in.", "success")
         return redirect(url_for("auth.login"))
