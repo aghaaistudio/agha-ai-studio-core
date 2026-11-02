@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy — Agha AI Studio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg-base: #0d0206; --bg-panel: rgba(30, 10, 18, 0.6); --accent-pink: #ff3366; --text-main: #ffffff; --text-muted: #b09ea1; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Outfit', sans-serif; }
+        body { background-color: var(--bg-base); color: var(--text-main); min-height: 100vh; padding: 40px 20px; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .glass-panel { background: var(--bg-panel); backdrop-filter: blur(24px); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 24px; padding: 40px; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5); }
+        h1 { font-size: 32px; color: var(--accent-pink); margin-bottom: 20px; }
+        h2 { font-size: 20px; margin-top: 25px; margin-bottom: 10px; color: #fff; }
+        p { color: var(--text-muted); line-height: 1.6; margin-bottom: 10px; font-size: 15px; }
+        .btn { background: var(--accent-pink); color: white; border: none; padding: 12px 24px; border-radius: 10px; cursor: pointer; text-decoration: none; font-weight: 600; display: inline-block; margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="glass-panel">
+            <h1>Privacy Policy</h1>
+            <p>Last updated: November 2026</p>
+            <h2>1. Information We Collect</h2>
+            <p>We collect your name, email address, and usage data when you register on our platform. We also log API requests to track credit usage and ensure system security.</p>
+            <h2>2. How We Use Your Data</h2>
+            <p>Your data is used solely to provide the AI services, manage your account, process credits, and send important system notifications.</p>
+            <h2>3. Data Security</h2>
+            <p>We implement industry-standard security measures. Your passwords are securely hashed and never stored in plain text.</p>
+            <h2>4. Third-Party AI Providers</h2>
+            <p>When you use our platform, your prompts are sent to our AI partners (such as Google Gemini) to generate responses.</p>
+            <a href="{{ url_for('main.home') }}" class="btn">← Back to Home</a>
+        </div>
+    </div>
+</body>
+</html>
