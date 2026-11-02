@@ -1,23 +1,10 @@
 """
 Google Gemini provider integration.
-
-This module is the ONLY place that talks to Gemini's API.
-Both the web UI and the API gateway call generate_text()
-through this single interface.
 """
 import requests
-
 from config import get_config
 
-
-def generate_text(prompt: str, model: str = "gemini-2.0-flash") -> dict:
-    """
-    Send a prompt to Google Gemini and return a structured result.
-
-    Always returns a dict. Never raises.
-    Success: {"ok": True, "text": "...", "model": "..."}
-    Failure: {"ok": False, "error": "...", "provider_status": <int, optional>}
-    """
+def generate_text(prompt: str, model: str = "gemini-3.5-flash") -> dict:
     config = get_config()
 
     if not prompt or not prompt.strip():
@@ -26,35 +13,26 @@ def generate_text(prompt: str, model: str = "gemini-2.0-flash") -> dict:
     if not config.GEMINI_API_KEY:
         return {"ok": False, "error": "Gemini API key is not configured."}
 
-    
-    url = (
-        "https://generativelanguage.googleapis.com/v1beta/"
-        f"models/{model}:generateContent"
-    )
-    headers = {
-        "Content-Type": "application/json",
-        "x-goog-api-key": config.GEMINI_API_KEY,
-    }
+    url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={config.GEMINI_API_KEY}"
+    headers = {"Content-Type": "application/json"}
     payload = {"contents": [{"parts": [{"text": prompt}]}]}
 
     try:
-        response = requests.post(
-            url,
-            json=payload,
-            headers=headers,
-            timeout=config.REQUEST_TIMEOUT,
-        )
+        response = requests.post(url, json=payload, headers=headers, timeout=config.REQUEST_TIMEOUT)
     except requests.RequestException as exc:
-        return {
-            "ok": False,
-            "error": f"Network error contacting Gemini: {exc.__class__.__name__}",
-        }
+        return {"ok": False, "error": f"Network error contacting Gemini: {exc.__class__.__name__}"}
 
     if response.status_code != 200:
+        # Yahan hum Google ka asal error message bhej rahe hain
+        try:
+            error_data = response.json()
+            exact_error = error_data.get("error", {}).get("message", response.text)
+        except:
+            exact_error = response.text
+            
         return {
             "ok": False,
-            "error": "Gemini request failed. Check model access, API key and quota.",
-            "provider_status": response.status_code,
+            "error": f"Google API Error ({response.status_code}): {exact_error}"
         }
 
     try:
