@@ -15,6 +15,7 @@ class User(UserMixin, db.Model):
     name = db.Column(db.String(120), nullable=False, default="")
     role = db.Column(db.String(20), nullable=False, default="user")
     is_active = db.Column(db.Boolean, nullable=False, default=True)
+    is_unlimited = db.Column(db.Boolean, nullable=False, default=False)
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     credits = db.Column(db.Integer, nullable=False, default=10)
     
