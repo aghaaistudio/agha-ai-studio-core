@@ -2,6 +2,8 @@
 Authentication routes: register, login, logout, forgot password, reset password.
 """
 import re
+import requests
+import os
 from flask import (
     Blueprint, flash, redirect, render_template, request, url_for, current_app
 )
@@ -44,18 +46,31 @@ def register():
         db.session.add(user)
         db.session.commit()
 
-        
+        # Send Emails via Resend API
         try:
-            # 1. Welcome Email to New User (From Support)
-            msg = Message("Welcome to Agha AI Studio!", recipients=[email])
-            msg.body = f"Hello {name},\n\nWelcome to Agha AI Studio! Your account has been created successfully.\n\nYou can now log in and start using our AI APIs.\n\nBest regards,\nAgha AI Support Team"
-            mail.send(msg)
-            
-            # 2. Notification Email to ADMIN (From Support)
-            admin_msg = Message("New User Registered - Agha AI Studio", recipients=["aghaaistudio@gmail.com"])
-            admin_msg.body = f"Hello Admin,\n\nA new user has just registered on your platform.\n\nName: {name}\nEmail: {email}\n\nPlease check your Admin Panel for details."
-            mail.send(admin_msg)
-            
+            resend_key = os.getenv("RESEND_API_KEY")
+            if resend_key:
+                headers = {
+                    "Authorization": f"Bearer {resend_key}",
+                    "Content-Type": "application/json"
+                }
+                # 1. Welcome Email to User
+                user_payload = {
+                    "from": "Agha AI Studio <onboarding@resend.dev>",
+                    "to": [email],
+                    "subject": "Welcome to Agha AI Studio!",
+                    "text": f"Hello {name},\n\nWelcome to Agha AI Studio! Your account has been created successfully.\n\nYou can now log in and start using our AI APIs.\n\nBest regards,\nAgha AI Support Team"
+                }
+                requests.post("https://api.resend.com/emails", json=user_payload, headers=headers)
+                
+                # 2. Notification Email to ADMIN
+                admin_payload = {
+                    "from": "Agha AI Studio <onboarding@resend.dev>",
+                    "to": ["aghaaistudio@gmail.com"],
+                    "subject": "New User Registered - Agha AI Studio",
+                    "text": f"Hello Admin,\n\nA new user has just registered on your platform.\n\nName: {name}\nEmail: {email}\n\nPlease check your Admin Panel for details."
+                }
+                requests.post("https://api.resend.com/emails", json=admin_payload, headers=headers)
         except Exception as e:
             print("Email sending failed:", e)
 
@@ -117,20 +132,23 @@ def forgot_password():
                 db.session.commit()
                 reset_url = url_for("auth.reset_password", token=token, _external=True)
 
-                try:
-                    msg = Message("Password Reset - Agha AI Studio", recipients=[user.email])
-                    msg.body = f"To reset your password, visit the following link:\n\n{reset_url}\n\nIf you did not make this request, ignore this email."
-                    mail.send(msg)
+                resend_key = os.getenv("RESEND_API_KEY")
+                if resend_key:
+                    headers = {
+                        "Authorization": f"Bearer {resend_key}",
+                        "Content-Type": "application/json"
+                    }
+                    payload = {
+                        "from": "Agha AI Studio <onboarding@resend.dev>",
+                        "to": [user.email],
+                        "subject": "Password Reset - Agha AI Studio",
+                        "text": f"To reset your password, visit the following link:\n\n{reset_url}\n\nIf you did not make this request, ignore this email."
+                    }
+                    requests.post("https://api.resend.com/emails", json=payload, headers=headers)
                     flash("An email has been sent with password reset instructions.", "success")
-                except Exception as e:
-                    print("\n" + "="*50)
-                    print(">>> TEST RESET LINK (Copy this URL):")
-                    print(reset_url)
-                    print("="*50 + "\n")
-                    flash("Email server not configured. Please check the Termux terminal for the reset link.", "error")
             except Exception as e:
                 db.session.rollback()
-                flash("An error occurred while generating the reset link. Please try again.", "error")
+                flash("An error occurred while generating the reset link.", "error")
 
             return redirect(url_for("auth.login"))
         else:
