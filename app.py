@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template
 from config import get_config
 from extensions import db, login_manager, mail
 from routes.api import api_bp
@@ -42,10 +42,6 @@ def create_app() -> Flask:
     app.register_blueprint(user_bp)
     app.register_blueprint(admin_bp)
 
-    with app.app_context():
-        db.create_all()
-
-
     @app.errorhandler(404)
     def not_found_error(error):
         return render_template('errors/404.html'), 404
@@ -55,7 +51,6 @@ def create_app() -> Flask:
         return render_template('errors/500.html'), 500
 
     return app
-
 
 app = create_app()
 

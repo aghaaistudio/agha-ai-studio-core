@@ -22,7 +22,8 @@ def admin_required(f):
 def dashboard():
     users = User.query.order_by(User.created_at.desc()).all()
     usages = UsageRecord.query.order_by(UsageRecord.created_at.desc()).limit(50).all()
-    return render_template("admin/dashboard.html", users=users, usages=usages)
+    recent_users = User.query.order_by(User.created_at.desc()).limit(5).all()
+    return render_template("admin/dashboard.html", users=users, usages=usages, recent_users=recent_users)
 
 @admin_bp.route("/toggle/<int:user_id>", methods=["POST"])
 @login_required
