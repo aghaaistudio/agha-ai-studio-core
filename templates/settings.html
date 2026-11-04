@@ -97,7 +97,7 @@
             </div>
             <div class="info-row" style="border-bottom: none;">
                 <span class="info-label">Available Credits</span>
-                <span class="info-value credits-val">{{ current_user.credits }} Credits</span>
+                <span class="info-value credits-val">{% if current_user.is_unlimited or current_user.role == 'admin' %}Unlimited{% else %}{{ current_user.credits }} Credits{% endif %}</span>
             </div>
         </div>
 

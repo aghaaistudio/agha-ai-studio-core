@@ -91,7 +91,7 @@
             {% if current_user.is_authenticated %}
                 <div class="stats-row">
                     <div class="stat-box">
-                        <div class="stat-val" id="creditDisplay">{{ current_user.credits }}</div>
+                        <div class="stat-val" id="creditDisplay">{% if current_user.is_unlimited or current_user.role == 'admin' %}Unlimited{% else %}{{ current_user.credits }}{% endif %}</div>
                         <div class="stat-lbl">Available Credits</div>
                     </div>
                     <div class="stat-box">
