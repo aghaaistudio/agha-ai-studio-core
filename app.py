@@ -10,6 +10,7 @@ from routes.docs import docs_bp
 from routes.billing import billing_bp
 from routes.user import user_bp
 from routes.admin import admin_bp
+from routes.whatsapp import whatsapp_bp
 
 def create_app() -> Flask:
     app = Flask(__name__)
@@ -41,6 +42,7 @@ def create_app() -> Flask:
     app.register_blueprint(billing_bp)
     app.register_blueprint(user_bp)
     app.register_blueprint(admin_bp)
+    app.register_blueprint(whatsapp_bp)
 
     @app.errorhandler(404)
     def not_found_error(error):
