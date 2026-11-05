@@ -25,7 +25,7 @@ def api_generate():
 
     # CHECK USER CREDITS
     user = User.query.get(key_obj.user_id)
-    if not user or user.credits <= 0:
+    if not user or (not user.is_unlimited and user.credits <= 0):
         return jsonify({"ok": False, "error": "Insufficient credits. Please top up your account."}), 403
 
     data = request.get_json(silent=True) or {}
@@ -38,7 +38,8 @@ def api_generate():
     
     # Deduct 1 credit upon success
     if result.get("ok"):
-        user.credits -= 1
+        if not user.is_unlimited:
+            user.credits -= 1
         key_obj.last_used_at = datetime.now(timezone.utc)
         record = UsageRecord(
             user_id=key_obj.user_id,

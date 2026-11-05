@@ -11,7 +11,7 @@ def generate():
     if not current_user.is_authenticated:
         return jsonify({"ok": False, "error": "Please log in to use the AI."}), 401
         
-    if current_user.credits <= 0:
+    if not current_user.is_unlimited and current_user.credits <= 0:
         return jsonify({"ok": False, "error": "Insufficient credits. Please buy more."}), 403
 
     data = request.get_json(silent=True) or {}
@@ -24,7 +24,8 @@ def generate():
     result = generate_text(prompt, model)
 
     if result.get("ok"):
-        current_user.credits -= 1
+        if not current_user.is_unlimited:
+                current_user.credits -= 1
         
         # Save Usage Record for Web UI (api_key_id=None)
         record = UsageRecord(
