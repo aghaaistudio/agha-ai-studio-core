@@ -16,3 +16,4 @@ Flask-Login>=0.6
 gunicorn
 Flask-Mail
 psycopg[binary]
+requests
