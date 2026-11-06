@@ -10,10 +10,16 @@ from routes.docs import docs_bp
 from routes.billing import billing_bp
 from routes.user import user_bp
 from routes.admin import admin_bp
-from routes.whatsapp import whatsapp_bp
 
 def create_app() -> Flask:
     app = Flask(__name__)
+# --- WhatsApp Integration ---
+try:
+    from routes.whatsapp import whatsapp_bp
+    app.register_blueprint(whatsapp_bp)
+except Exception as e:
+    print("WhatsApp Import Error:", e)
+
     config = get_config()
     app.config["SECRET_KEY"] = config.SECRET_KEY
     app.config["ENV"] = config.ENV
