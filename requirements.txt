@@ -17,3 +17,4 @@ gunicorn
 Flask-Mail
 psycopg[binary]
 requests
+requests
