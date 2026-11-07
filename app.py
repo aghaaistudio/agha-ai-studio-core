@@ -58,7 +58,6 @@ except Exception as e:
     def internal_error(error):
         return render_template('errors/500.html'), 500
 
-    return app
 
 app = create_app()
 
