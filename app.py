@@ -12,11 +12,11 @@ from routes.user import user_bp
 from routes.admin import admin_bp
 
 def create_app() -> Flask:
+from routes.whatsapp import whatsapp_bp
     app = Flask(__name__)
+app.register_blueprint(whatsapp_bp)
 # --- WhatsApp Integration ---
 try:
-    from routes.whatsapp import whatsapp_bp
-    app.register_blueprint(whatsapp_bp)
 except Exception as e:
     print("WhatsApp Import Error:", e)
 
@@ -48,7 +48,6 @@ except Exception as e:
     app.register_blueprint(billing_bp)
     app.register_blueprint(user_bp)
     app.register_blueprint(admin_bp)
-    app.register_blueprint(whatsapp_bp)
 
     @app.errorhandler(404)
     def not_found_error(error):
