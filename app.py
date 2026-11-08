@@ -1,6 +1,8 @@
 from flask import Flask, render_template
 from config import get_config
 from extensions import db, login_manager, mail
+
+# تمام Blueprints کی امپورٹس (بشمول واٹس ایپ)
 from routes.api import api_bp
 from routes.auth import auth_bp
 from routes.main import main_bp
@@ -10,23 +12,20 @@ from routes.docs import docs_bp
 from routes.billing import billing_bp
 from routes.user import user_bp
 from routes.admin import admin_bp
+from routes.whatsapp import whatsapp_bp
 
 def create_app() -> Flask:
-from routes.whatsapp import whatsapp_bp
     app = Flask(__name__)
-app.register_blueprint(whatsapp_bp)
-# --- WhatsApp Integration ---
-try:
-except Exception as e:
-    print("WhatsApp Import Error:", e)
-
     config = get_config()
+    
+    # Configurations
     app.config["SECRET_KEY"] = config.SECRET_KEY
     app.config["ENV"] = config.ENV
     app.config["DEBUG"] = config.DEBUG
     app.config["SQLALCHEMY_DATABASE_URI"] = config.SQLALCHEMY_DATABASE_URI
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = config.SQLALCHEMY_TRACK_MODIFICATIONS
 
+    # Initialize Extensions
     db.init_app(app)
     login_manager.init_app(app)
     mail.init_app(app)
@@ -39,6 +38,7 @@ except Exception as e:
         except (TypeError, ValueError):
             return None
 
+    # Register Blueprints
     app.register_blueprint(main_bp)
     app.register_blueprint(api_bp, url_prefix="/api")
     app.register_blueprint(auth_bp)
@@ -48,7 +48,9 @@ except Exception as e:
     app.register_blueprint(billing_bp)
     app.register_blueprint(user_bp)
     app.register_blueprint(admin_bp)
+    app.register_blueprint(whatsapp_bp) # واٹس ایپ کا روٹ
 
+    # Error Handlers
     @app.errorhandler(404)
     def not_found_error(error):
         return render_template('errors/404.html'), 404
@@ -57,8 +59,9 @@ except Exception as e:
     def internal_error(error):
         return render_template('errors/500.html'), 500
 
+    return app
 
 app = create_app()
 
 if __name__ == "__main__":
-    app.run(host="127.0.0.1", port=5000, debug=app.config["DEBUG"])
+    app.run(host="0.0.0.0", port=5000, debug=app.config["DEBUG"])
